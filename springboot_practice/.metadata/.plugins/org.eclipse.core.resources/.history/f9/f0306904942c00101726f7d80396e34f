@@ -1,0 +1,54 @@
+package com.klef.fsd.springboot.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.klef.fsd.springboot.model.user;
+import com.klef.fsd.springboot.service.userservice;
+
+@RestController
+@RequestMapping("/user")
+@CrossOrigin("*")
+public class usercontroller {
+	@Autowired
+ private userservice service;
+	
+ @GetMapping("/")
+ public String Home()
+ {
+	 return "Home Page";
+ }
+ @PostMapping("/adduser")
+ public ResponseEntity<String> adduser(@RequestBody user u)
+ {
+	   try
+	   {
+		  String output =service.adduser(u);
+		  return ResponseEntity.ok(output); 
+	   }
+	   catch(Exception e)
+	   {
+		   return ResponseEntity.status(500).body("Failed to Add useer ... !!"); 
+	   }
+ }
+ @GetMapping("/viewall")
+ public List<user> viewalluser()
+ {
+		return service.viewalluser();
+ }
+ @DeleteMapping("/delete/{mid}")
+ public String deleteuser(@PathVariable int uid)
+ {
+	 return service.deleteuser(uid);
+ }
+}

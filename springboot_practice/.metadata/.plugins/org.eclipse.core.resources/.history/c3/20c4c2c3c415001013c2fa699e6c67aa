@@ -1,0 +1,15 @@
+package com.klef.fsd.springboot.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.klef.fsd.springboot.model.user;
+import com.klef.fsd.springboot.respository.StudentRepository;
+
+
+@Service
+public class userserviceimpl implements userservice{
+	 @Autowired
+     private userrepository repository;
+	 @over
+}

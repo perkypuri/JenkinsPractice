@@ -1,0 +1,81 @@
+package com.klef.fsd.springboot.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+import com.klef.fsd.springboot.model.Student;
+import org.springframework.stereotype.Service;
+
+import com.klef.fsd.springboot.respository.StudentRepository;
+import java.util.List;
+
+@Service
+public class StudentServiceImpl implements StudentService{
+     @Autowired
+     private StudentRepository repository;
+     
+     
+     @Override
+     public String addstudent(Student s) {
+    	 repository.save(s);
+    	 return "Student added successfully";
+     }
+     
+     @Override
+ 	public String updatestudent(Student s) {
+ 		Optional<Student> object= repository.findById(s.getId());
+ 		String msg=null;
+ 		if(object.isPresent()) {
+ 			Student student=object.get();
+ 			student.setAge(s.getAge());
+ 			student.setName(s.getName());
+ 			student.setContact(s.getContact());
+ 			student.setGender(s.getGender());
+ 			student.setId(s.getId());
+ 			
+ 			repository.save(s);
+ 			msg="Student id updated successfully";
+ 		}
+ 		else {
+ 			msg="student id not found to update";
+ 		}
+ 		return msg;
+ 		
+ 	}
+
+ 	@Override
+ 	
+    	public String deletestudent(int sid) {
+ 		// TODO Auto-generated method stub
+ 	Optional<Student> object= repository.findById(sid); 
+ 	String msg=null;
+ 	if(object.isPresent()) {
+ 		Student student=object.get();
+ 		repository.delete(student);
+ 		msg="Student deleted successfully";
+ 	}
+ 	else {
+ 		msg="Student id not found";
+ 	}
+ 	return msg;
+ 	
+ 	}
+
+ 	@Override
+ 	public List<Student> viewallstudents() {
+ 		// TODO Auto-generated method stub
+ 		return repository.findAll();
+ 		
+ 		
+ 	}
+
+ 	@Override
+ 	public Student viewstudentbyid(int sid) {
+ 		// TODO Auto-generated method stub
+ 		return  repository.findById(sid).orElse(null);
+ 		//orElse handles exceptions
+ 		//get() doesnt
+  		//optional class: checks whether the object is present or not;
+ 	}
+ 	
+	
+}
