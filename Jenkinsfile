@@ -3,7 +3,6 @@ pipeline {
 
     stages {
 
-        // ===== FRONTEND BUILD =====
         stage('Build Frontend') {
             steps {
                 dir('frontend_exam/endsem_exam') {
@@ -13,29 +12,29 @@ pipeline {
             }
         }
 
-        // ===== FRONTEND DEPLOY =====
+        
         stage('Deploy Frontend to Tomcat') {
             steps {
                 bat '''
-                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\reactuserapi" (
-                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\reactuserapi"
+                if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userfrontend" (
+                    rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userfrontend"
                 )
-                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\reactuserapi"
-                xcopy /E /I /Y frontend_exam\\endsem_exam\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\reactuserapi"
+                mkdir "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userfrontend"
+                xcopy /E /I /Y frontend_exam\\endsem_exam\\dist\\* "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userfrontend"
                 '''
             }
         }
 
-        // ===== BACKEND BUILD =====
+       
         stage('Build Backend') {
             steps {
-                dir('springboot_practice') {
+                dir('springboot_practice/endsemlab') {
                     bat 'mvn clean package'
                 }
             }
         }
 
-        // ===== BACKEND DEPLOY =====
+       
         stage('Deploy Backend to Tomcat') {
             steps {
                 bat '''
@@ -45,7 +44,7 @@ pipeline {
                 if exist "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userbackend" (
                     rmdir /S /Q "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\userbackend"
                 )
-                copy "springboot_practice\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
+                copy "springboot_practice\\endsemlab\\target\\*.war" "C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1\\webapps\\"
                 '''
             }
         }
