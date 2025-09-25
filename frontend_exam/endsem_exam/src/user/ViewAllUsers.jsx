@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import config from '../config';
 
-function ViewAllUsers() {
+export default function ViewAllUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:2100/user/viewall") // adjust port if needed
+    fetch(`${config.url}/viewall`)
       .then((response) => response.json())
       .then((data) => {
         setUsers(data);
@@ -17,9 +18,7 @@ function ViewAllUsers() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
+  if (loading) return <p>Loading users...</p>;
 
   return (
     <div style={{ padding: "20px" }}>
@@ -53,5 +52,3 @@ function ViewAllUsers() {
     </div>
   );
 }
-
-export default ViewAllUsers;

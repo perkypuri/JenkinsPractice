@@ -23,26 +23,20 @@ export default function AddUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post(`${config.url}/user/adduser`, formData);
+      const response = await axios.post(`${config.url}/adduser`, formData);
       if (response.status === 200) {
         setMessage(response.data);
         setError('');
-        setFormData({
-          name: '',
-          email: '',
-          gender: '',
-          contact: '',
-        });
+        setFormData({ name: '', email: '', gender: '', contact: '' });
       }
-    } catch (error) {
-      console.error("Full error:", error.response?.data || error);
+    } catch (err) {
+      console.error("Full error:", err.response?.data || err);
       setMessage('');
-      if (error.response && typeof error.response.data === 'object') {
-        setError(error.response.data);
+      if (err.response && typeof err.response.data === 'object') {
+        setError(err.response.data);
       } else {
-        setError("An unexpected error occurred.");
+        setError(err.response?.data || "An unexpected error occurred.");
       }
     }
   };
@@ -53,41 +47,21 @@ export default function AddUser() {
       {message ? (
         <p style={{ textAlign: "center", color: "green", fontWeight: "bolder" }}>{message}</p>
       ) : error ? (
-        <p style={{ textAlign: "center", color: "red", fontWeight: "bolder" }}>
-          {typeof error === "string" ? error : error.message || "Something went wrong!"}
-        </p>
+        <p style={{ textAlign: "center", color: "red", fontWeight: "bolder" }}>{typeof error === "string" ? error : error.message || "Something went wrong!"}</p>
       ) : null}
 
       <form onSubmit={handleSubmit}>
         <div>
           <label>Full Name</label>
-          <input
-            type="text"
-            id="name"
-            value={formData.name}
-            onChange={handleChange}
-            onKeyUp={handleCase}
-            required
-          />
+          <input type="text" id="name" value={formData.name} onChange={handleChange} onKeyUp={handleCase} required />
         </div>
         <div>
           <label>Email</label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" id="email" value={formData.email} onChange={handleChange} required />
         </div>
         <div>
           <label>Gender</label>
-          <select
-            id="gender"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-          >
+          <select id="gender" value={formData.gender} onChange={handleChange} required>
             <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -96,15 +70,8 @@ export default function AddUser() {
         </div>
         <div>
           <label>Mobile No</label>
-          <input
-            type="number"
-            id="contact"
-            value={formData.contact}
-            onChange={handleChange}
-            required
-          />
+          <input type="number" id="contact" value={formData.contact} onChange={handleChange} required />
         </div>
-
         <button type="submit">Add</button>
       </form>
     </div>
